@@ -1,16 +1,16 @@
 pipeline {
-    agent {
-        docker {
-            image 'docker:latest'
-            args '-v /var/run/docker.sock:/var/run/docker.sock'
-        }
-    }
+    agent any
 
     stages {
         stage('Checkout') {
             steps {
                 // Check out the code from GitHub
                 git url: 'https://github.com/vsundare/sundaresan_test_automation.git', branch: 'main'
+            }
+        }
+        stage('Docker') {
+            steps {
+                sh 'docker -H tcp://docker:2375 ps'
             }
         }
         stage('Verify Docker Access') {

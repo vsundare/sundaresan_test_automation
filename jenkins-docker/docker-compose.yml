@@ -1,16 +1,30 @@
-version: '3.8'
-
+version: '3'
 services:
   jenkins:
-    image: jenkins/jenkins:lts
-    container_name: jenkins
+    build: .
+    privileged: true
     ports:
-      - "8090:8080"
-      - "50090:50000"
+      - 8090:8080
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - /usr/bin/docker:/usr/bin/docker
-      - /usr/local/bin/docker-compose:/usr/local/bin/docker-compose
+      - jenkins_data:/var/jenkins_home_new
+    depends_on:
+      - docker
+    networks:
+      - jenkins-net
 
-    user: "501:20"  # adjust the user and group IDs
-    restart: unless-stopped
+  docker:
+    image: docker:dind
+    privileged: true
+    expose:
+      - "2375"
+    volumes:
+      - docker_sock:/var/runs/docker.sock
+    networks:
+      - jenkins-net
+
+volumes:
+  jenkins_data:
+  docker_sock:
+
+networks:
+  jenkins-net:
