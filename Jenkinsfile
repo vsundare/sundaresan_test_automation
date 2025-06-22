@@ -26,11 +26,9 @@ pipeline {
         }
         stage('Generate Allure Report') {
             steps {
+                // Publish Allure test report using Allure Jenkins plugin
                 allure([
-                    includeProperties: false,
-                    jdk: '',
-                    reportBuildPolicy: 'ALWAYS',
-                    results: [[path: 'allure-results']]
+                    results: [[path: './allure-results']]
                 ])
             }
         }
