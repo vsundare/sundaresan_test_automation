@@ -26,10 +26,8 @@ pipeline {
         }
         stage('Generate Allure Report') {
             steps {
-                // Publish Allure test report using Allure Jenkins plugin
-                allure([
-                    results: [[path: './allure-results']]
-                ])
+                // Use the Allure Jenkins plugin to publish test results
+                allure includeProperties: false, results: [[path: './allure-results']]
             }
         }
         stage('Clean Up') {
@@ -74,8 +72,22 @@ pipeline {
     }
     post {
         always {
-            archiveArtifacts artifacts: '**/allure-results/*', allowEmptyArchive: true
+            // Archive Allure results for later inspection
+            archiveArtifacts artifacts: './allure-results/**', allowEmptyArchive: true
+            // Clean up Jenkins workspace to save space
             cleanWs()
+        }
+        success {
+            // Notify about successful build
+            mail to: 'you@example.com',
+                 subject: "Build Success: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+                 body: "Good news! The build ${env.BUILD_NUMBER} of ${env.JOB_NAME} succeeded. Check the report at ${env.BUILD_URL}."
+        }
+        failure {
+            // Notify about failed build
+            mail to: 'you@example.com',
+                 subject: "Build Failure: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+                 body: "Unfortunately, the build ${env.BUILD_NUMBER} of ${env.JOB_NAME} failed. Please check the details at ${env.BUILD_URL}."
         }
     }
 }
