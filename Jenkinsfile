@@ -11,6 +11,7 @@ pipeline {
         stage('Verify Docker Access') {
             steps {
                 script {
+                    sh 'whoami'
                     sh 'docker --version'
                     sh 'id'
                     sh 'ls -l /var/run/docker.sock'
