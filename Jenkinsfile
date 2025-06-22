@@ -18,8 +18,8 @@ pipeline {
                 script {
                     sh 'whoami'
                     sh 'docker --version'
-                    sh 'id'
-                    sh 'ls -l /var/run/docker.sock'
+//                     sh 'id'
+//                     sh 'ls -l /var/run/docker.sock'
                 }
             }
         }
