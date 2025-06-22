@@ -7,3 +7,5 @@ COPY docker/requirements-test.txt /app/requirements-test.txt
 RUN pip install --no-cache-dir -r requirements-test.txt
 
 COPY /app/functional_tests/ /app/functional_tests
+
+CMD ["pytest", "/app/functional_tests/tests", "--alluredir=/app/allure-results"]
