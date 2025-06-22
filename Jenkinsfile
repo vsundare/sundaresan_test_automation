@@ -4,7 +4,8 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/vsundare/sundaresan_test_automation.git'
+                // Check out the code from GitHub
+                git url: 'https://github.com/vsundare/sundaresan_test_automation.git', branch: 'main'
             }
         }
         stage('Build and Run Application') {
