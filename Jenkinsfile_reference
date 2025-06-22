@@ -1,0 +1,52 @@
+pipeline {
+    agent any
+    environment {
+        ALLURE_RESULTS_DIR = 'allure-results'
+    }
+    stages {
+        stage('Checkout') {
+            steps {
+                git 'https://github.com/yourusername/flask-area-calculator.git'
+            }
+        }
+        stage('Build') {
+            steps {
+                script {
+                    docker.build('flask-area-calculator')
+                }
+            }
+        }
+        stage('Code Quality') {
+            steps {
+                // For simplicity, just running linting as a quality check
+                echo "Running code quality checks..."
+                sh 'flake8 app.py'
+            }
+        }
+        stage('Test') {
+            steps {
+                script {
+                    docker.image('flask-area-calculator').inside {
+                        sh 'pytest --alluredir=allure-results test_app.py'
+                    }
+                }
+            }
+        }
+        stage('Allure Report') {
+            steps {
+                allure commandline: 'allure', results: [[path: ALLURE_RESULTS_DIR]]
+            }
+        }
+        stage('Deploy') {
+            when {
+                expression { currentBuild.currentResult == 'SUCCESS' }
+            }
+            steps {
+                script {
+                    echo "Deploying application..."
+                    sh 'docker run -d -p 5000:5000 flask-area-calculator'
+                }
+            }
+        }
+    }
+}

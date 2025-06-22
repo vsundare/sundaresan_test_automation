@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.app  # Ensure this path matches your directory structure
+    env_file:
+      - .env
+    ports:
+      - ${EXPOSED_PORT}:${APP_PORT}
+
+  test:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.test  # Ensure this path matches your directory structure
+    command: bash -c "pytest /app/functional_tests/tests --alluredir=allure-results"
+    env_file:
+      - .env
+    depends_on:
+      - app
+    volumes:
+      - allure-results:/app/allure-results
+
+
+volumes:
+  allure-results:
+
+networks:
+  internal-network:
+    driver: bridge

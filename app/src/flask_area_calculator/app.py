@@ -1,6 +1,10 @@
 from flask import Flask, request, jsonify
+import os
 
 app = Flask(__name__)
+port = os.getenv("APP_PORT", 5000)
+flask_host = os.getenv("FLASK_HOST", "127.0.0.1")
+base_url = f"http://{flask_host}:{port}"
 
 
 @app.route('/area/rectangle', methods=['GET'])
@@ -26,4 +30,4 @@ def circle():
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+    app.run(host=flask_host, port=port)
