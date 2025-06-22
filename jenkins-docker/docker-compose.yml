@@ -16,15 +16,17 @@ services:
     image: docker:dind
     privileged: true
     expose:
-      - "2375"
-    volumes:
-      - docker_sock:/var/runs/docker.sock
+      - 2375
+    environment:
+      - DOCKER_TLS_CERTDIR=
+#    volumes:
+#      - docker_sockts:/var/run/docker.sock
     networks:
       - jenkins-net
 
 volumes:
   jenkins_data:
-  docker_sock:
+  docker_sockts:
 
 networks:
   jenkins-net:

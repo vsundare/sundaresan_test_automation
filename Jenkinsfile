@@ -10,7 +10,7 @@ pipeline {
         }
         stage('Docker') {
             steps {
-                sh 'docker -H tcp://docker:2375 ps'
+                sh 'docker -H tcp://docker:2375 --tls=false ps'
             }
         }
         stage('Verify Docker Access') {
