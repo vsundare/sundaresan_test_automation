@@ -8,16 +8,15 @@ pipeline {
                 git url: 'https://github.com/vsundare/sundaresan_test_automation.git', branch: 'main'
             }
         }
-        stages {
-            stage('Verify Docker Access') {
-                steps {
-                    script {
-                        sh 'docker --version'
-                        sh 'id'
-                        sh 'ls -l /var/run/docker.sock'
-                    }
+        stage('Verify Docker Access') {
+            steps {
+                script {
+                    sh 'docker --version'
+                    sh 'id'
+                    sh 'ls -l /var/run/docker.sock'
                 }
             }
+        }
         stage('Build and Run Application') {
             steps {
                 sh 'docker-compose up --build -d app'
