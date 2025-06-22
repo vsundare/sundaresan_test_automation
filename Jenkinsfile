@@ -24,12 +24,12 @@ pipeline {
                 }
             }
         }
-        stage('Generate Allure Report') {
-            steps {
-                // Use the Allure Jenkins plugin to publish test results
-                allure includeProperties: false, results: [[path: './allure-results']]
-            }
-        }
+//         stage('Generate Allure Report') {
+//             steps {
+//                 // Use the Allure Jenkins plugin to publish test results
+//                 allure includeProperties: false, results: [[path: './allure-results']]
+//             }
+//         }
         stage('Clean Up') {
             steps {
                 sh 'docker-compose down --volumes'
