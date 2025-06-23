@@ -13,6 +13,11 @@ pipeline {
                 sh 'docker -H tcp://docker:2375 --tls=false ps'
             }
         }
+        stage('Docker Compose') {
+            steps {
+                sh 'docker compose up --build -d app'
+            }
+        }
         stage('Verify Docker Access') {
             steps {
                 script {
