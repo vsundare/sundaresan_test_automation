@@ -8,12 +8,10 @@ pipeline {
                 git url: 'https://github.com/vsundare/sundaresan_test_automation.git', branch: 'main'
             }
         }
-        stage('Docker') {
-            steps {
-                sh 'docker -H tcp://docker:2375 --tls=false ps'
-            }
-        }
         stage('Docker Compose') {
+            environment {
+                DOCKER_HOST = 'tcp://docker:2375'
+            }
             steps {
                 sh 'docker compose up --build -d app'
             }
